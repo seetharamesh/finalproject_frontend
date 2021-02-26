@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import DatePicker from  "react-datepicker"
 //the below css is already available in datepicker package
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,6 +9,7 @@ const RetrievePage = () => {
 //  let usersCollection = [];
   let [usersCollection, setUsersCollection] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
+  var [deleteFlag, setDeleteFlag] = useState(false);
   // const [value, setValue] = useState('');
   // const [id, setId] = useState();
 
@@ -39,8 +40,45 @@ const RetrievePage = () => {
   const dataTable = () => {
     return usersCollection.map((data,i) => {
       return <DataTable obj = {data} key={i} />;
+        //return <DataTable obj = {data} key={i} child={deleteFlag} parentMethod={useEffect} />;
     });
-  }
+  }//end of dataTable
+
+  //this method will be used by child when delete is pressed and the row has to be removed from state.
+   //useEffect(() => {
+  //   if(this.props.deleteFlag == true){
+  //   //  const removeFromState = (date,deleteFlag) => {
+  //       //console.log("Inside removeFromState method and date is:",date);
+  //       axios.get(`http://localhost:8080/api/diary/${this.props.date}`)
+  //           .then(response => {
+  //             console.log(response);
+  //             setUsersCollection(response.data);
+  //           })
+  //           .catch(function(error){
+  //             console.log(error);
+  //           })
+  // //  }
+  //
+  // }
+//})
+
+    //console.log(id);
+    // dataFromChild.map((record,i) => {
+    //   console.log(record[i].id);
+    //   console.log(record[i].date);
+    // })
+    //  if(deleteFlag){
+        // useEffect(() =>{
+        //   console.log("inside useEffect");
+        //  const removeFromState = (dataFromChild,deleteFlag) =>{
+        //  let filteredProducts = dataFromChild;
+      //  }
+    // },[deleteFlag])
+    //    this.setState({
+    // //   circuits: currentCircuits.filter(circuit => circuit.id !== circuitID),
+    // // });
+//     }
+  // }
 
  return (
    <form onSubmit= {handleSubmit}>
