@@ -1,0 +1,118 @@
+import React, {useState} from 'react';
+import DatePicker from  "react-datepicker"
+//the below css is already available in datepicker package
+import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
+
+const AddPage = () => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [value, setValue] = useState('');
+
+  const handleSubmit = (event) => {
+    event.preventDefault();//remove this "event" because we want to reset the form after submit
+    console.log("inside submit");
+    console.log(value);
+    console.log(startDate);
+    //axios request to create a row
+    axios.post('http://localhost:8080/api/diary', {
+    startDate: startDate,
+    value: value
+})
+.then((response) => {
+  console.log(response);
+}, (error) => {
+  console.log(error);
+});
+
+  }
+ return (
+   <form onSubmit= {handleSubmit}>
+   <h2>ADD YOUR DIARY ENTRY</h2><br />
+   <DatePicker selected={startDate} onChange={date => setStartDate(date)} /><br />
+   <textarea
+    value={value}
+    placeholder="Welcome back! How was your day today ?"
+    onChange={event => setValue(event.target.value)}
+    rows={5}
+    cols={22}
+    />
+    <br/>
+    <input type="submit" value="Submit" />
+</form>
+);//end of return
+}//end of function
+export default AddPage;
+//-----------------------------------------------------------
+
+import React, {useState} from 'react';
+import DatePicker from  "react-datepicker"
+//the below css is already available in datepicker package
+import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
+import DataTable from './DataTable'
+
+const RetrievePage = () => {
+//  let usersCollection = [];
+  let [usersCollection, setUsersCollection] = useState([]);
+  const [date, setStartDate] = useState(new Date());
+  const [value, setValue] = useState('');
+  const [id, setId] = useState();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();//remove this "event" after checking with carthic as we WANT to reset the form
+    console.log("inside submit");
+    axios.get('http://localhost:8080/api/diary')
+          .then(res => {
+            console.log(res);
+            setUsersCollection(res.data);
+          })
+          .catch(function(error){
+            console.log(error);
+          })
+  }//end handleSubmit
+
+  const dataTable = () => {
+    return usersCollection.map((data,i) => {
+      return <DataTable obj = {data} key={i} />;
+    });
+  }
+
+
+ return (
+   <form onSubmit= {handleSubmit}>
+   <h2>RETRIEVE DIARY ENTRIES BY SPECIFIC DATE</h2><br />
+ <DatePicker selected={date} onChange={date => setStartDate(date)} /><br />
+    <br/>
+    <input type="submit" value="Submit" />
+    <table>
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Date</td>
+          <td>Entry</td>
+        </tr>
+      </thead>
+        <tbody>
+          {dataTable}
+        </tbody>
+    </table>
+
+</form>
+);//end of return
+}//end of function
+export default RetrievePage;
+
+// <DatePicker
+// selected={startDate}
+// selectsStart
+// startDate={startDate}
+// endDate={endDate}
+// onChange={date => setStartDate(date)} />
+//
+// <DatePicker
+// selected={endDate}
+// selectsEnd
+// startDate={startDate}
+// endDate={endDate}
+// minDate={startDate}
+// onChange={date => setEndDate(date)} />
