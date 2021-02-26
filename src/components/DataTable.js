@@ -59,11 +59,13 @@ state = {
              .then(response => {
                console.log(response);
                this.setState({usersCollection:response.data});
-               
+
              })
              .catch(function(error){
                console.log(error);
              })
+             //this.forceUpdate();
+
   }
 
 
