@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './components/App';
-import AddPage from './components/AddPage';
-import RetrievePage from './components/RetrievePage';
-import UpdatePage from './components/UpdatePage';
+// import AddPage from './components/AddPage';
+// import RetrievePage from './components/RetrievePage';
+// import UpdatePage from './components/UpdatePage';
 //import DeletePage from './components/DeletePage';
 
 import reportWebVitals from './reportWebVitals';
@@ -12,7 +13,7 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <React.StrictMode>
     <div>
-    <RetrievePage />
+    <App />
     </div>
   </React.StrictMode>,
   document.getElementById('root')
