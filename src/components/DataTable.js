@@ -1,73 +1,26 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import RetrievePage from './RetrievePage';
+import ShowModal from './ShowModal';
+import Button from "react-bootstrap/Button";
 
+/*This is the main component that handles delete, update functionality and table data is displayed*/
 class DataTable extends Component{
-state = {
-    usersCollection: [],
-    deleteFlag:false
-}
+
+/* Delete Functionality*/
    handleDelete = event => {
-    console.log("inside handleDelete");
-    console.log(this.props.obj.id);
-    console.log("----- hidden logic done below");
-    //getting the deleteFlag from parent as a prop
-    console.log(this.props.child);
-    const items = {
-            id: this.props.obj.id,
-            date: this.props.obj.date,
-            entry:this.props.obj.entry
-          };
-
-    console.log("items are:", items);
-    this.state.usersCollection.push(items);
-    console.log("usersCollection looks like this:", this.state.usersCollection);
-    //call parent method to update the state.
-    //this.props.parentMethod(this.state.usersCollection,true);
-
-    //make sure the axios call has backtick when passing parameters
-    //Note that "this.props.obj.id" gets its value from handleSubmit() of retrieve page
-    //so you can see console logs related to it.
     axios.delete(`http://localhost:8080/api/diary/${this.props.obj.id}`)
         .then(res => {
-          console.log("****");
           console.log(res);
-          this.setState({deleteFlag:true});
-          console.log("resetting deleteFlag to true");
-          console.log(this.state.deleteFlag);
-          console.log(this.state.usersCollection);
-          console.log("Calling parents method with date of ", items.date);
-          this.handleRefresh();
-        //  this.props.parentMethod(items.date,true);
-          //this.setState.usersCollection = [];
-          // const items = {
-          //         id: res.data.id,
-          //         date: res.data.date,
-          //         entry:res.data.entry
-          //       };
-          //       console.log("items are:", items);
-          //       this.setState.usersCollection.splice(items.id,1);
+          //Very important this will perform the automatic refresh..the axios call above deletes the record from database
+          //We need the same to be taken away from display screen too. This prop(retrieveData) is passed from RetrievePage.
+          //It's basically calling the submit functionality in retrieve page
+          this.props.handleRefresh();
         })
         .catch(function(error){
           console.log(error);
         })
   }//end of handleDelete
-
-  handleRefresh = event => {
-    console.log("inside handleRefresh");
-    axios.get(`http://localhost:8080/api/diary/${this.props.obj.date}`)
-             .then(response => {
-               console.log(response);
-               this.setState({usersCollection:response.data});
-
-             })
-             .catch(function(error){
-               console.log(error);
-             })
-             //this.forceUpdate();
-
-  }
-
 
   render(){
     return(
@@ -82,7 +35,12 @@ state = {
           {this.props.obj.entry}
         </td>
         <td>
-          <button onClick= {this.handleDelete}>Delete</button>
+          <button type="button" class="btn btn-danger" aria-label="Left Align" onClick= {this.handleDelete}>
+           <span class="fa fa-trash-o fa-lg" aria-hidden="true"></span>
+           </button>
+        </td>
+        <td>
+          <ShowModal id={this.props.obj.id} entry={this.props.obj.entry} date = {this.props.obj.date} handleRefresh = {this.props.handleRefresh} />
         </td>
         </tr>
     );
@@ -90,4 +48,7 @@ state = {
 }
 export default DataTable;
 
-//          {this.state.deleteFlag && this.handleRefresh}
+
+
+{/*
+   */}

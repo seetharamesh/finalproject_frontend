@@ -12,6 +12,8 @@ import Error from "./Error";
 import Navigation from "./Navigation";
 import AddPage from "./AddPage";
 
+/* This component is used for Routing to appropriate pages*/
+
 class App extends Component {
   render() {
     return (
